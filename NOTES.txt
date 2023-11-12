@@ -1,0 +1,8 @@
+XSTORECONF Java app
+
+Requirements
+1. Be able to read the XSTORECONF tables of different tables
+2. To be able to store db configurations, or at least pass db configuration as input
+3. Be able to compare XSTORECONF tables of two different environments
+4. Be able to output file that shows the differences of two XSTORECONF tables
+	> will be excel format
