@@ -17,10 +17,9 @@ import java.util.Arrays;
 		defaultCommand = Help.class,
 		commands = {XStoreConfDiff.class, Help.class})
 public class XstoreconfApplication {
-
 	private static Logger logger = LoggerFactory.getLogger(XstoreconfApplication.class);
 
-	public static void main(String[] args) throws JsonProcessingException {
+	public static void main(String[] args) {
 
 		logger.info("Args: {}", Arrays.stream(args).toList().toString());
 		com.github.rvesse.airline.Cli<Runnable> cli = new com.github.rvesse.airline.Cli<>(XstoreconfApplication.class);
