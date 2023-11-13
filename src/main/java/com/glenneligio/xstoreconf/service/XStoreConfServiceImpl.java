@@ -16,20 +16,20 @@ public class XStoreConfServiceImpl implements XStoreConfService {
 
     static {
         // first database
-        testXStoreConfList1.add(new XStoreConf(0, "NAME1", "VALUE1", -1, true));
-        testXStoreConfList1.add(new XStoreConf(0, "NAME2", "VALUE2", -1, true));
-        testXStoreConfList1.add(new XStoreConf(0, "NAME3", "VALUE3", -1, true));
-        testXStoreConfList1.add(new XStoreConf(80206, "NAME4", "VALUE4", -1, true));
-        testXStoreConfList1.add(new XStoreConf(80206, "NAME5", "VALUE5", -1, true));
-        testXStoreConfList1.add(new XStoreConf(80999, "NAME6", "VALUE6", -1, true));
+        testXStoreConfList1.add(new XStoreConf(0, "NAME1", "VALUE1", true, -1));
+        testXStoreConfList1.add(new XStoreConf(0, "NAME2", "VALUE2", true, -1));
+        testXStoreConfList1.add(new XStoreConf(0, "NAME3", "VALUE3", true, -1));
+        testXStoreConfList1.add(new XStoreConf(80206, "NAME4", "VALUE4", false, -1));
+        testXStoreConfList1.add(new XStoreConf(80206, "NAME5", "VALUE5", false, -1));
+        testXStoreConfList1.add(new XStoreConf(80999, "NAME6", "VALUE6", false, -1));
 
         // second database
-        testXStoreConfList2.add(new XStoreConf(0, "NAME1", "VALUE1", -1, true));
-        testXStoreConfList2.add(new XStoreConf(0, "NAME2", "VALUE2", -1, true));
-        testXStoreConfList2.add(new XStoreConf(0, "NAME3", "VALUE3", -1, true));
-        testXStoreConfList2.add(new XStoreConf(80206, "NAME4", "VALUE4", -1, true));
-        testXStoreConfList2.add(new XStoreConf(80206, "NAME5", "VALUE5", -1, true));
-        testXStoreConfList2.add(new XStoreConf(80205, "NAME7", "VALUE7", -1, true));
+        testXStoreConfList2.add(new XStoreConf(0, "NAME1", "VALUE1", false, -1));
+        testXStoreConfList2.add(new XStoreConf(0, "NAME2", "VALUE2", false, -1));
+        testXStoreConfList2.add(new XStoreConf(0, "NAME3", "VALUE3", false, -1));
+        testXStoreConfList2.add(new XStoreConf(80206, "NAME4", "VALUE4", false, -1));
+        testXStoreConfList2.add(new XStoreConf(80206, "NAME5", "VALUE5", false, -1));
+        testXStoreConfList2.add(new XStoreConf(80205, "NAME7", "VALUE7", false, -1));
     }
 
     @Override

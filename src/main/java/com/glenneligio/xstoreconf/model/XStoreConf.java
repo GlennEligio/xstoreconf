@@ -11,6 +11,6 @@ public class XStoreConf {
     private int storeEntId;
     private String name;
     private String value;
-    private int languageId;
     private boolean uxVisibility;
+    private int languageId;
 }
