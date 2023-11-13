@@ -1,12 +1,15 @@
 package com.glenneligio.xstoreconf.service;
 
-import com.glenneligio.xstoreconf.XstoreconfApplication;
 import com.glenneligio.xstoreconf.model.XStoreConf;
 import com.glenneligio.xstoreconf.model.XStoreConfExcelEntry;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,8 +19,45 @@ public class XStoreConfExcelServiceImpl implements XStoreConfExcelService{
     private static Logger logger = LoggerFactory.getLogger(XStoreConfExcelServiceImpl.class);
 
     @Override
-    public ByteArrayInputStream listToExcel(List<XStoreConfExcelEntry> objects) {
-        return null;
+    public void listToExcel(List<XStoreConfExcelEntry> objects, String fileName) {
+        try (Workbook workbook = new XSSFWorkbook()) {
+            logger.info("Iterating to each TransactionType");
+            Sheet sheet = workbook.createSheet("Comparison");
+
+            // Create header row
+            Row headerRow = sheet.createRow(0);
+            String[] headers = new String[]{"STOREENT_ID", "NAME1", "VALUE1", "UX_VISIBILITY1", "LANGID1", "NAME", "VALUE","UX_VISIBILITY","LANGID" ,"NAME2","VALUE2", "UX_VISIBILITY2", "LANGID2"};
+
+            for(int i = 0; i < headers.length; i++) {
+                headerRow.createCell(i).setCellValue(headers[i]);
+            }
+
+            for (int j = 0; j < objects.size(); j++) {
+                Row dataRow = sheet.createRow(j+1);
+                XStoreConfExcelEntry excelEntry = objects.get(j);
+                dataRow.createCell(0).setCellValue(excelEntry.getStoreEntId());
+                dataRow.createCell(1).setCellValue(excelEntry.getName1());
+                dataRow.createCell(2).setCellValue(excelEntry.getValue1());
+                dataRow.createCell(3).setCellValue(Objects.isNull(excelEntry.getUxVisibility1()) ? "" : excelEntry.getUxVisibility1().toString());
+                dataRow.createCell(4).setCellValue(Objects.isNull(excelEntry.getLangId1()) ? "" : excelEntry.getLangId1().toString());
+                dataRow.createCell(5).setCellValue(excelEntry.isNameSame());
+                dataRow.createCell(6).setCellValue(excelEntry.isValueSame());
+                dataRow.createCell(7).setCellValue(excelEntry.isUxVisibilitySame());
+                dataRow.createCell(8).setCellValue(excelEntry.isLangIdSame());
+                dataRow.createCell(9).setCellValue(excelEntry.getName2());
+                dataRow.createCell(10).setCellValue(excelEntry.getValue2());
+                dataRow.createCell(11).setCellValue(Objects.isNull(excelEntry.getUxVisibility2()) ? "" : excelEntry.getUxVisibility2().toString());
+                dataRow.createCell(12).setCellValue(Objects.isNull(excelEntry.getLangId2()) ? "" : excelEntry.getLangId2().toString());
+            }
+
+            File file = new File(fileName);
+            if(file.createNewFile()) {
+                FileOutputStream outputStream = new FileOutputStream(file);
+                workbook.write(outputStream);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -91,5 +131,11 @@ public class XStoreConfExcelServiceImpl implements XStoreConfExcelService{
         }
 
         return result;
+    }
+
+    @Override
+    public void createExcelFileFromTwoXStoreConfList(List<XStoreConf> x1, List<XStoreConf> x2, String fileName) {
+        List<XStoreConfExcelEntry> excelEntries = getXStoreExcelEntries(x1, x2);
+        listToExcel(excelEntries, fileName);
     }
 }

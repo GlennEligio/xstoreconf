@@ -6,9 +6,14 @@ import com.github.rvesse.airline.HelpOption;
 import com.github.rvesse.airline.annotations.Command;
 import com.github.rvesse.airline.annotations.Group;
 import com.github.rvesse.airline.annotations.Option;
+import com.glenneligio.xstoreconf.dao.XStoreConfDao;
 import com.glenneligio.xstoreconf.dao.XStoreConfDaoImpl;
 import com.glenneligio.xstoreconf.model.DbConfiguration;
 import com.glenneligio.xstoreconf.model.XStoreConf;
+import com.glenneligio.xstoreconf.model.XStoreConfExcelEntry;
+import com.glenneligio.xstoreconf.service.XStoreConfExcelService;
+import com.glenneligio.xstoreconf.service.XStoreConfExcelServiceImpl;
+import com.glenneligio.xstoreconf.service.XStoreConfService;
 import com.glenneligio.xstoreconf.service.XStoreConfServiceImpl;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -61,12 +66,16 @@ public class XStoreConfDiff implements Runnable{
     @Option(name = {"-t2", "--table2"}, description = "Table name of the second table. e.g. XSTORECONF")
     protected String tableName2;
 
-    private String hostname1, hostname2,username1, username2, password1, password2, name1, name2;
+    @Option(name = {"-o", "--output"}, description = "Output filename. must be fully qualified path")
+    protected String outputFilename;
+
+    private String hostname1, hostname2,username1, username2, password1, password2, dbName1, dbName2;
     private int port1, port2;
 
     @SneakyThrows
     @Override
     public void run() {
+        logger.info("General output - dbConfig: {} \noutput: {}", dbConfigsYaml, outputFilename);
         logger.info("Input for table 1 - brand: {}, env: {}, envType: {}, table: {}", brand1, env1, envType1, tableName1 );
         logger.info("Input for table 2 - brand: {}, env: {}, envType: {}, table: {}", brand2, env2, envType2, tableName2 );
 
@@ -95,13 +104,13 @@ public class XStoreConfDiff implements Runnable{
             port1 = dbConfig1.getDatabase().getPort();
             username1 = dbConfig1.getDatabase().getUsername();
             password1 = dbConfig1.getDatabase().getPassword();
-            name1 = dbConfig1.getDatabase().getName();
+            dbName1 = dbConfig1.getDatabase().getName();
 
             hostname2 = dbConfig2.getDatabase().getHost();
             port2 = dbConfig2.getDatabase().getPort();
             username2 = dbConfig2.getDatabase().getUsername();
             password2 = dbConfig2.getDatabase().getPassword();
-            name2 = dbConfig2.getDatabase().getName();
+            dbName2 = dbConfig2.getDatabase().getName();
         } else {
             if (Objects.isNull(dbConfig1)) {
                 logger.info("DB Configuration for table 1 does not exist in config db yaml file");
@@ -113,17 +122,20 @@ public class XStoreConfDiff implements Runnable{
         }
 
         // Logic on connecting to database and getting the list
+        XStoreConfDao dao1 = new XStoreConfDaoImpl(hostname1, username1, password1, dbName1, port1, tableName1);
+        XStoreConfDao dao2 = new XStoreConfDaoImpl(hostname2, username2, password2, dbName2, port2, tableName2);
 
-        XStoreConfDaoImpl dao1 = new XStoreConfDaoImpl(hostname1, username1, password1, name1, port1, tableName1);
-        XStoreConfDaoImpl dao2 = new XStoreConfDaoImpl(hostname2, username2, password2, name2, port2, tableName2);
+        XStoreConfService service1 = new XStoreConfServiceImpl(dao1);
+        XStoreConfServiceImpl service2 = new XStoreConfServiceImpl(dao2);
 
-        List<XStoreConf> xStoreConfList1 = dao1.getAll();
-        List<XStoreConf> xStoreConfList2 = dao2.getAll();
+        List<XStoreConf> xStoreConfList1 = service1.getAllXStoreConf();
+        List<XStoreConf> xStoreConfList2 = service2.getAllXStoreConf2();
 
 		logger.info("List 1: {}", xStoreConfList1);
 		logger.info("List 2: {}", xStoreConfList2);
 
-//		List<XStoreConfExcelEntry> xStoreConfExcelEntries = new XStoreConfExcelServiceImpl().getXStoreExcelEntries(xStoreConfList1, xStoreConfList2);
+        XStoreConfExcelService excelService = new XStoreConfExcelServiceImpl();
+        excelService.createExcelFileFromTwoXStoreConfList(xStoreConfList1, xStoreConfList2, outputFilename);
 //
 //		ObjectMapper mapper = new ObjectMapper();
 //		logger.info("Excel list: {}", mapper.writeValueAsString(xStoreConfExcelEntries));

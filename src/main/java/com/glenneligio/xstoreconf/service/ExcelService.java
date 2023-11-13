@@ -1,8 +1,11 @@
 package com.glenneligio.xstoreconf.service;
 
+import org.apache.poi.ss.usermodel.Workbook;
+
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.util.List;
 
 public interface ExcelService<T>{
-    ByteArrayInputStream listToExcel(List<T> objects);
+    void listToExcel(List<T> objects, String fileName);
 }

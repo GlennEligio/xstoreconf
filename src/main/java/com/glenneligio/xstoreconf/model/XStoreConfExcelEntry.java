@@ -15,10 +15,10 @@ public class XStoreConfExcelEntry {
     private String name2;
     private String value1;
     private String value2;
-    private boolean uxVisibility1;
-    private boolean uxVisibility2;
-    private int langId1;
-    private int langId2;
+    private Boolean uxVisibility1;
+    private Boolean uxVisibility2;
+    private Integer langId1;
+    private Integer langId2;
 
     private boolean isNameSame;
     private boolean isValueSame;
@@ -31,14 +31,14 @@ public class XStoreConfExcelEntry {
         if(Objects.nonNull(xStoreConf1)) {
             setName1(xStoreConf1.getName());
             setValue1(xStoreConf1.getValue());
-            setUxVisibility1(xStoreConf1.isUxVisibility());
+            setUxVisibility1(xStoreConf1.getUxVisibility());
             setLangId1(xStoreConf1.getLanguageId());
         }
 
         if(Objects.nonNull(xStoreConf2)) {
             setName2(xStoreConf2.getName());
             setValue2(xStoreConf2.getValue());
-            setUxVisibility2(xStoreConf2.isUxVisibility());
+            setUxVisibility2(xStoreConf2.getUxVisibility());
             setLangId2(xStoreConf2.getLanguageId());
         }
 

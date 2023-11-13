@@ -1,5 +1,7 @@
 package com.glenneligio.xstoreconf.service;
 
+import com.glenneligio.xstoreconf.dao.XStoreConfDao;
+import com.glenneligio.xstoreconf.dao.XStoreConfDaoImpl;
 import com.glenneligio.xstoreconf.model.XStoreConf;
 
 import java.io.ByteArrayInputStream;
@@ -8,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class XStoreConfServiceImpl implements XStoreConfService {
+
+    private XStoreConfDao dao;
 
     // for first database
     private static List<XStoreConf> testXStoreConfList1 = new ArrayList<>();
@@ -32,9 +36,14 @@ public class XStoreConfServiceImpl implements XStoreConfService {
         testXStoreConfList2.add(new XStoreConf(80205, "NAME7", "VALUE7", false, -1));
     }
 
+    public XStoreConfServiceImpl(XStoreConfDao dao) {
+        this.dao = dao;
+    }
+
     @Override
     public List<XStoreConf> getAllXStoreConf() {
-        return testXStoreConfList1;
+        return dao.getAll();
+//        return testXStoreConfList1;
     }
 
     @Override

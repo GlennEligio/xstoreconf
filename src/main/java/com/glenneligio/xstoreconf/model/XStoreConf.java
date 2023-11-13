@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class XStoreConf {
-    private int storeEntId;
+    private Integer storeEntId;
     private String name;
     private String value;
-    private boolean uxVisibility;
-    private int languageId;
+    private Boolean uxVisibility;
+    private Integer languageId;
 }
