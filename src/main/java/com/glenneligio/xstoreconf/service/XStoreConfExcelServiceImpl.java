@@ -107,7 +107,7 @@ public class XStoreConfExcelServiceImpl implements XStoreConfExcelService{
             }
 
             // check if different storeEntId
-            if(x1.getStoreEntId() != x2.getStoreEntId()) {
+            if(!Objects.equals(x1.getStoreEntId(), x2.getStoreEntId())) {
                 // whoever have lower storeEntId, the list where that entry below will be added
                 if(x1.getStoreEntId() > x2.getStoreEntId()) {
                     sortedXStoreConfList1.add(currIteration, null);
@@ -116,7 +116,7 @@ public class XStoreConfExcelServiceImpl implements XStoreConfExcelService{
                     sortedXStoreConfList2.add(currIteration, null);
                 }
             } else {
-                if(!x1.getName().equals(x2.getName())) {
+                if(!Objects.equals(x1.getName(), x2.getName())) {
                     if(x1.getName().compareTo(x2.getName()) > 0) {
                         sortedXStoreConfList1.add(currIteration, null);
                     } else {

@@ -126,10 +126,10 @@ public class XStoreConfDiff implements Runnable{
         XStoreConfDao dao2 = new XStoreConfDaoImpl(hostname2, username2, password2, dbName2, port2, tableName2);
 
         XStoreConfService service1 = new XStoreConfServiceImpl(dao1);
-        XStoreConfServiceImpl service2 = new XStoreConfServiceImpl(dao2);
+        XStoreConfService service2 = new XStoreConfServiceImpl(dao2);
 
         List<XStoreConf> xStoreConfList1 = service1.getAllXStoreConf();
-        List<XStoreConf> xStoreConfList2 = service2.getAllXStoreConf2();
+        List<XStoreConf> xStoreConfList2 = service2.getAllXStoreConf();
 
 		logger.info("List 1: {}", xStoreConfList1);
 		logger.info("List 2: {}", xStoreConfList2);
